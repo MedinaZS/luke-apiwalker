@@ -2,14 +2,14 @@
   text-align: center;
 }
 
-.form-select{
-  width: 200px;
-}
-
-.dropdown button{
-  /* width: 170px ; */
+.input-group{
+  width: 300px;
 }
 
 .dropdown-item{
   cursor: pointer;
+}
+
+.card{
+  width: 80%;
 }

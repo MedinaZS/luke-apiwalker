@@ -1,69 +1,68 @@
-import React, { useState } from 'react'
-import { useEffect } from 'react'
-import axios from 'axios'
+import React, { useContext, useState } from 'react'
+import Context from './Context';
+import axios from 'axios';
 
 const Form = () => {
 
-    const [listResources, setListResources] = useState("");
-    const [resource, setResource] = useState("");
+    const { resource, setResource, setResult, setLoading } = useContext(Context);
 
-    useEffect(() => {
-        axios.get("https://swapi.dev/api/")
+    const [id, setId] = useState("");
+
+    const searchResource = (evento) => {
+        evento.preventDefault();
+        getData();
+        setId("");
+        
+        setLoading(true);
+        document.getElementById("input-id").focus();
+    }
+
+    const getData = () => {
+        const url = createUrl();
+
+         axios.get(url)
             .then(response => {
-                setListResources(Object.keys(response.data));
-            });
-
-    }, []);
-
-    const handleSearchFor = (e) => {
-        setResource(e.target.innerText);
+                setResult(response.data);
+                setLoading(false);
+            }).catch(err => setResult('error'));
+            
     }
 
-    function capitalize(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+    const createUrl = () => {
+        return `https://swapi.dev/api/${resource.toLowerCase()}/${id}/`;
     }
-
 
     return (
-        <div className='d-flex'>
-            {/* Select menu */}
-            <div className='row align-items-center me-5'>
-                <div className='col-auto'>
-                    <label htmlFor="">Search for:</label>
-                </div>
+        <form onSubmit={searchResource} className='d-flex align-items-center'>
 
-                <div className='col-auto'>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-                            <i className="fa-regular fa-circle-user me-2"></i>
-                            <span className='me-5'>{resource ? resource : 'People'}</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            {listResources && listResources.map((item,index) => (
-                                <li className='dropdown-item' onClick={handleSearchFor} key={index}>
-                                    <i className="fa-regular fa-circle-user me-2"></i>
-
-                                    {capitalize(item)}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
+            {/* Menu search for */}
+            <div className="input-group mb-3 me-4">
+                <span className="input-group-text" id="basic-addon1">Search for:</span>
+                {/* <input type="text" className="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1"/> */}
+                <select className="form-select" onChange={(e) => { setResource(e.target.value); setResult(""); }} value={resource}>
+                    <option value='people'>People</option>
+                    <option value='films'>Films</option>
+                    <option value='starships'>Starships</option>
+                    <option value='vehicles'>Vehicles</option>
+                    <option value='species'>Species</option>
+                    <option value='planets'>Planets</option>
+                </select>
             </div>
+
+            <div className="input-group mb-3">
+                <span className="input-group-text" id="basic-addon1">ID:</span>
+                <input id='input-id' className='form-control' style={{ width: '100px' }} type="number" value={id} onChange={(e) => setId(e.target.value)} min='0' required />
+                <button className="btn btn-secondary" type="submit" id="button-addon2"><i className='fa fa-search'></i> Search</button>
+            </div>
+
+
+            {/* Search for dropdown menu */}
+            {/* <MenuForm /> */}
 
             {/* Id search */}
-            <div className='row align-items-center'>
-                <div className='col-auto'>
-                    <label>Id</label>
-                </div>
-                <div className='col-auto'>
-                    <input style={{ width: '100px' }} type="text" />
-                </div>
-                <div className='col-auto'>
-                    <button className='btn btn-secondary px-3'>Search</button>
-                </div>
-            </div>
-        </div>
+            {/* <InputForm /> */}
+
+        </form>
     )
 }
 
