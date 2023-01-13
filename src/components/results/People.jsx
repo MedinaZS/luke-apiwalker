@@ -18,13 +18,13 @@ const People = () => {
         console.log("use effect");
 
         // setHomeworld("");
-        if (id) {
-            setLoading(true);
-            axios.get(`https://swapi.dev/api/people/${id}/`)
-                .then(response => {
-                    setResult(response.data);
-                }).catch(err => setResult('error'));
-        }
+        // if (id) {
+        //     setLoading(true);
+        //     axios.get(`https://swapi.dev/api/people/${id}/`)
+        //         .then(response => {
+        //             setResult(response.data);
+        //         }).catch(err => setResult('error'));
+        // }
 
         //Get name of homeworld
         if (result.homeworld) {

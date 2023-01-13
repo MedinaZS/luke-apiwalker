@@ -20,7 +20,8 @@ function App() {
 						{/* Render form and result */}
 						<Route path='/' element={<><Form /><Result /></>}></Route>
 						{/* Render only people result */}
-						<Route path="/:id" loader={({ params }) => {  }} element={< People />}>
+						{/* <Route path="/:id" loader={({ params }) => {  }} element={< People />}> */}
+						<Route path="/:id" element={< Result />}>
 						</Route>
 					</Routes>
 				</BrowserRouter>
