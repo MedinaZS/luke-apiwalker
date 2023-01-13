@@ -1,17 +1,19 @@
 import React, { useContext } from 'react'
+import { capitalize } from '../../helpers';
 import Context from '../Context';
 
 const Planets = () => {
 
-    const { result, loading } = useContext(Context);
+    const { result, loading, resource } = useContext(Context);
 
     return (
         <div className='mt-4 '>
-            <h1 className='ms-3'>Planets</h1>
+            <h1 className='ms-3'>{capitalize(resource)}</h1>
             <hr />
-            {Object.keys(result).length > 0
-                ? (
-                    <div className='card mt-4 '>
+            {loading === true
+                ? (<>Loading...</>)
+                : (Object.keys(result).length > 0
+                    ? (<div className='card mt-4 '>
                         <div className='card-header text-secondary'>
                             <h3>{result.name}</h3>
                             <em>Population: {result.population}</em>
@@ -25,7 +27,9 @@ const Planets = () => {
                             <li className="list-group-item">Rotation Period: {result.rotation_period}</li>
                         </ul>
                     </div>)
-                : (loading ? (<>Loading...</>) : '')}
+                    : '')}
+
+            
 
         </div>
     )
